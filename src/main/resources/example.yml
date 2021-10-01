@@ -1,0 +1,55 @@
+server:
+  type: simple
+  rootPath: /
+  applicationContextPath: /
+  #adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+  allowedMethods:
+    - POST
+    - GET
+    - DELETE
+
+# Logging settings.
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+  # Logger-specific levels.
+  loggers:
+    # Sets the level for 'com.example.app' to DEBUG.
+    com.basaki.example: DEBUG
+    # Redirects SQL logs to a separate file
+    org.hibernate.SQL:
+      level: DEBUG
+
+  appenders:
+    - type: console
+    - type: file
+      threshold: INFO
+      logFormat: "%d [%-15.15t] %-5p %-30.30c{1} - %m%n"
+      currentLogFilename: target/log/example.log
+      # When the log file rotates, the archived log will be renamed to this and gzipped. The
+      # %d is replaced with the previous day (yyyy-MM-dd). Custom rolling windows can be created
+      # by passing a SimpleDateFormat-compatible format as an argument: "%d{yyyy-MM-dd-hh}".
+      archivedLogFilenamePattern: target/log/example-%d.log.gz
+      archivedFileCount: 5
+      timeZone: UTC
+
+# Database settings.
+database:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+  # the username
+  user: sa
+  # the password
+  password: sa
+  # the JDBC URL
+  url: jdbc:h2:./target/example
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+swagger:
+  resourcePackage: com.basaki.example
